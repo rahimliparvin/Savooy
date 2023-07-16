@@ -1,0 +1,225 @@
+﻿@inject Savoy.Service.Interfaces.ICartService _cartService;
+@inject Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager;
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/scss/pages/homepage/homepage.css">
+    @await RenderSectionAsync("Style",required:false)
+    <title>@ViewBag.Title</title>
+</head>
+
+<body>
+
+
+    <header>
+        <section id="navigation">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <div class="navleft">
+                            <ul>
+                                <li>
+                                    <a asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li>
+                                    <a class="shopBtn" asp-controller="Shop" asp-action="Index">Shop</a>
+                                </li>
+                                <li>
+                                    <a class="categoriesBtn" asp-controller="Shop" asp-action="Index">Categories<sup>NEW</sup></a>
+                                </li>
+                                <li>
+                                    <a class="pagesBtn" asp-controller="Home" asp-action="Index" >Pages</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="logimg">
+                            <a asp-controller="Home" asp-action="Index">
+                                <img src="~/assets/image/HeaderLogo.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <div class="navright">
+                            <ul>
+                              
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li><a asp-controller="Wishlist" asp-action="Index"><i class="fa-regular fa-heart"></i></a></li>
+                                    <form asp-controller="Account" asp-action="Logout">
+                                        <button type="submit" style="border:none;background-color:white;margin-top:12px;color:#686868">
+                                            Logout
+                                        </button>
+                                    </form>
+                                    <li style="list-style:none;color:white;background-color:white;color:#686868 ;">
+                                        @User.Identity.Name
+                                    </li>
+
+                                    <li>
+                                        <a asp-controller="Cart" asp-action="Index">
+                                            Cart
+                                            <sup>
+                                           
+                                                @await _cartService.GetCartProductBasket(_userManager.Users.FirstOrDefault(u=>u.UserName == User.Identity.Name).Id)
+                                            </sup>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a asp-controller="Account" asp-action="Login">Sign In</a></li>
+                                }
+
+                               
+                            </ul>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-pages d-none">
+                    <ul>
+                        <li><a asp-controller="Cart" asp-action="Index">Cart</a></li>
+                        <li><a asp-controller="Checkout" asp-action="Index">Checkout</a></li>
+                        <li><a asp-controller="Wishlist" asp-action="Index">Wishlist</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="col-lg-12">
+                    <div class="categoriestitle d-none">
+
+                        <div class="col-lg-3">
+                            <div class="bags">
+                                <a class="categoriesName" asp-controller="Shop" asp-action="Index" asp-route-categoryId="1" data-id="1">
+                                    <img src="~/assets/image/bags.jpg" alt="">
+                                    <span>Bags & Backpacks</span>
+                               </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+
+                            <div class="decoration">
+                                <a class="categoriesName" asp-controller="Shop" asp-action="Index" asp-route-categoryId="2" data-id="2">
+                                    <img src="~/assets/image/decor.jpg" alt="">
+                                <span>Decoration</span>
+                               </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="essentials">
+                                <a class="categoriesName" asp-controller="Shop" asp-action="Index" asp-route-categoryId="3" data-id="3">
+                                    <img src="~/assets/image/aksesuar.jpg" alt="">
+                                    <span>Essentials</span>
+                               </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="interior">
+                                <a class="categoriesName" asp-controller="Shop" asp-action="Index" asp-route-categoryId="4" data-id="4">
+                                    <img src="~/assets/image/interrior.jpg" alt="">
+                                    <span>Interior</span>
+                              </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="allcategories">
+                                <a class="allCategoriesName" asp-controller="Shop" asp-action="Index">
+                                    <img src="~/assets/image/allcategories.jpg" alt="">
+                                    <span>Shop All</span>
+                               </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="pages d-none">
+                    <ul>
+                        <li><a asp-controller="About" asp-action="Index">About</a></li>
+                        <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
+                        <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                        <li><a asp-controller="Checkout" asp-action="Index">Checkout</a></li>
+                        <li><a asp-controller="Cart" asp-action="Index">Cart</a></li>
+                        <li><a asp-controller="Wishlist" asp-action="Index">Wishlist</a></li>
+                        <li><a asp-controller="Account" asp-action="Register">Sign Up</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+    </header>
+
+        @RenderBody()
+
+    <footer>
+        <section id="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-5 col-sm-4">
+                        <div class="footerimg">
+                            <ul>
+                                <li><i class="fa-solid fa-location-dot"></i> Amsterdam, Netherlands</li>
+                                <li><i class="fa-solid fa-envelope"></i> hello@example.com</li>
+                                <li><i class="fa-solid fa-phone"></i> +703.172.3412</li>
+                            </ul>
+                            <img src="~/assets/image/footerpayment.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5 col-sm-4">
+                        <div class="footerpage">
+                            <ul>
+                                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li><a asp-controller="About" asp-action="Index">About</a></li>
+                                <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
+                                <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                                <li><a asp-controller="Shop" asp-action="Index">Shop</a></li>
+                            </ul>
+                            <p>© SINCE 1985</p>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 col-md-2 col-sm-4">
+                        <div class="footersocial">
+                            <ul>
+                                <li><a target="_blank" asp-host="www.instagram.com"><i class="fa-brands fa-instagram"></i></a></li>
+                                <li><a target="_blank" asp-host="www.twitter.com"><i class="fa-brands fa-twitter"></i></a></li>
+                                <li><a target="_blank" asp-host="www.facebook.com"><i class="fa-brands fa-facebook"></i></a></li>
+                                <li><a target="_blank" asp-host="www.youtube.com"><i class="fa-brands fa-youtube"></i></a></li>
+                                <li><a target="_blank" asp-host="www.linkedin.com"><i class="fa-brands fa-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+
+     <script src="https://kit.fontawesome.com/e29b1b43d1.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/assets/js/home.js"></script>
+
+    @await RenderSectionAsync("Script",required:false)
+
+
+</body>
+</html>
